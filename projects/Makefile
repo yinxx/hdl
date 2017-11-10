@@ -16,6 +16,7 @@ all:
 	-make -C ad9265_fmc all
 	-make -C ad9434_fmc all
 	-make -C ad9467_fmc all
+	-make -C ad9694_500ebz all
 	-make -C ad9739a_fmc all
 	-make -C adaq7980_sdz all
 	-make -C adrv9361z7035 all
@@ -56,6 +57,7 @@ clean:
 	make -C ad9265_fmc clean
 	make -C ad9434_fmc clean
 	make -C ad9467_fmc clean
+	make -C ad9694_500ebz clean
 	make -C ad9739a_fmc clean
 	make -C adaq7980_sdz clean
 	make -C adrv9361z7035 clean
@@ -96,6 +98,7 @@ clean-all:
 	make -C ad9265_fmc clean-all
 	make -C ad9434_fmc clean-all
 	make -C ad9467_fmc clean-all
+	make -C ad9694_500ebz clean-all
 	make -C ad9739a_fmc clean-all
 	make -C adaq7980_sdz clean-all
 	make -C adrv9361z7035 clean-all
