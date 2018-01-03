@@ -53,6 +53,7 @@ module axi_adc_jesd204 #(
   input                            s_axi_aresetn,
   input                            s_axi_awvalid,
   input      [15:0]                s_axi_awaddr,
+  input      [ 2:0]                s_axi_awprot,
   output                           s_axi_awready,
   input                            s_axi_wvalid,
   input      [31:0]                s_axi_wdata,
@@ -63,6 +64,7 @@ module axi_adc_jesd204 #(
   input                            s_axi_bready,
   input                            s_axi_arvalid,
   input      [15:0]                s_axi_araddr,
+  input      [ 2:0]                s_axi_arprot,
   output                           s_axi_arready,
   output                           s_axi_rvalid,
   output     [ 1:0]                s_axi_rresp,
@@ -72,7 +74,10 @@ module axi_adc_jesd204 #(
 
   // Number of samples per channel that are processed in parallel.
   // Assumes 2 octets per sample.
-  localparam DATA_PATH_WIDTH = 2 * NUM_LANES / NUM_CHANNELS;
+  localparam DATA_PATH_WIDTH = (4/OCT_PER_SAMPLE) * NUM_LANES / NUM_CHANNELS;
+
+  // Define octet per sample for data mapping
+  localparam OCT_PER_SAMPLE = (CHANNEL_WIDTH > 8) ? 2 : 1;
 
   // internal clocks & resets
 
@@ -81,7 +86,7 @@ module axi_adc_jesd204 #(
 
   // internal signals
 
-  wire    [NUM_LANES*2*CHANNEL_WIDTH-1:0] adc_if_data_s;
+  wire    [NUM_LANES*(4/OCT_PER_SAMPLE)*CHANNEL_WIDTH-1:0] adc_if_data_s;
 
   wire                                    up_wreq_s;
   wire    [13:0]                          up_waddr_s;
@@ -106,7 +111,8 @@ module axi_adc_jesd204 #(
   axi_adc_jesd204_if #(
     .NUM_LANES(NUM_LANES),
     .NUM_CHANNELS(NUM_CHANNELS),
-    .CHANNEL_WIDTH(CHANNEL_WIDTH)
+    .CHANNEL_WIDTH(CHANNEL_WIDTH),
+    .OCT_PER_SAMPLE(OCT_PER_SAMPLE)
   ) i_if (
     .rx_clk (rx_clk),
     .rx_sof (rx_sof),
@@ -120,6 +126,7 @@ module axi_adc_jesd204 #(
     .NUM_CHANNELS(NUM_CHANNELS),
     .CHANNEL_WIDTH(CHANNEL_WIDTH),
     .DATA_PATH_WIDTH(DATA_PATH_WIDTH),
+    .OCT_PER_SAMPLE(OCT_PER_SAMPLE),
     .TWOS_COMPLEMENT(TWOS_COMPLEMENT)
   ) i_core (
     .adc_clk(rx_clk),
