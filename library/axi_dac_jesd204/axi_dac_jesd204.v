@@ -27,6 +27,7 @@ module axi_dac_jesd204 #(
   parameter ID = 0,
   parameter NUM_LANES = 4,
   parameter NUM_CHANNELS = 2,
+  parameter CHANNEL_WIDTH = 16,
   parameter DAC_DATAPATH_DISABLE = 0
 ) (
   // jesd interface
@@ -69,6 +70,9 @@ module axi_dac_jesd204 #(
 
   localparam DATA_PATH_WIDTH = 2 * NUM_LANES / NUM_CHANNELS;
 
+  // Define octet per sample for data mapping
+  localparam OCT_PER_SAMPLE = (CHANNEL_WIDTH > 8) ? 2 : 1;
+
   // internal clocks and resets
 
   wire                         dac_rst;
@@ -77,7 +81,7 @@ module axi_dac_jesd204 #(
 
   // internal signals
 
-  wire    [NUM_LANES*32-1:0]   dac_data_s;
+  wire    [NUM_LANES*(4/OCT_PER_SAMPLE)*CHANNEL_WIDTH-1:0]   dac_data_s;
 
   wire                         up_wreq_s;
   wire    [ 13:0]              up_waddr_s;
@@ -101,7 +105,8 @@ module axi_dac_jesd204 #(
 
   axi_dac_jesd204_if #(
     .NUM_LANES(NUM_LANES),
-    .NUM_CHANNELS(NUM_CHANNELS)
+    .NUM_CHANNELS(NUM_CHANNELS),
+    .OCT_PER_SAMPLE(OCT_PER_SAMPLE)
   ) i_if (
     .tx_clk (tx_clk),
     .tx_data (tx_data),
@@ -114,7 +119,8 @@ module axi_dac_jesd204 #(
   axi_dac_jesd204_core #(
     .ID (ID),
     .NUM_CHANNELS(NUM_CHANNELS),
-    .DATAPATH_DISABLE (DAC_DATAPATH_DISABLE)
+    .DATAPATH_DISABLE (DAC_DATAPATH_DISABLE),
+    .OCT_PER_SAMPLE(OCT_PER_SAMPLE)
   ) i_core (
     .dac_clk (tx_clk),
     .dac_rst (dac_rst),
