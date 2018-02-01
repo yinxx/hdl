@@ -9,6 +9,7 @@
 all:
 	-make -C a10gx all
 	-make -C a10soc all
+	-make -C iwg24d all	
 	-make -C kc705 all
 	-make -C kcu105 all
 	-make -C vc707 all
@@ -19,6 +20,7 @@ all:
 clean: 
 	make -C a10gx clean
 	make -C a10soc clean
+	make -C iwg24d clean	
 	make -C kc705 clean
 	make -C kcu105 clean
 	make -C vc707 clean
@@ -29,6 +31,7 @@ clean:
 clean-all:
 	make -C a10gx clean-all
 	make -C a10soc clean-all
+	make -C iwg24d clean	
 	make -C kc705 clean-all
 	make -C kcu105 clean-all
 	make -C vc707 clean-all
