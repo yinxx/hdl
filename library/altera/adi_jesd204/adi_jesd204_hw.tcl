@@ -113,6 +113,10 @@ ad_ip_parameter SOFT_PCS BOOLEAN true false { \
   DISPLAY_NAME "Enable Soft PCS" \
 }
 
+ad_ip_parameter INVERT_RX_INPUTS BOOLEAN false false { \
+  DISPLAY_NAME "Invert RX data inputs" \
+}
+
 proc create_phy_reset_control {tx num_of_lanes sysclk_frequency} {
   add_instance phy_reset_control altera_xcvr_reset_control
   set_instance_property phy_reset_control SUPPRESS_ALL_WARNINGS true
@@ -229,6 +233,7 @@ proc jesd204_compose {} {
   set soft_pcs [get_parameter_value "SOFT_PCS"]
   set device_family [get_parameter_value "DEVICE_FAMILY"]
   set device [get_parameter_value "DEVICE"]
+  set invert_rx_inputs [get_parameter_value "INVERT_RX_INPUTS"]
 
   set pllclk_frequency [expr $lane_rate / 2]
   set linkclk_frequency [expr $lane_rate / 40]
@@ -327,6 +332,7 @@ proc jesd204_compose {} {
   set_instance_parameter_value phy REFCLK_FREQUENCY $refclk_frequency
   set_instance_parameter_value phy NUM_OF_LANES $num_of_lanes
   set_instance_parameter_value phy REGISTER_INPUTS $register_inputs
+  set_instance_parameter_value phy INVERT_RX_INPUTS $invert_rx_inputs
 
   add_connection link_clock.out_clk_1 phy.link_clk
   add_connection link_reset.out_reset phy.link_reset

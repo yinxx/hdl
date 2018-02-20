@@ -45,7 +45,8 @@
 module jesd204_soft_pcs_rx #(
   parameter NUM_LANES = 1,
   parameter DATA_PATH_WIDTH = 4,
-  parameter REGISTER_INPUTS = 0
+  parameter REGISTER_INPUTS = 0,
+  parameter INVERT_INPUTS = 0
 ) (
    input clk,
    input reset,
@@ -73,7 +74,12 @@ reg [NUM_LANES-1:0] disparity = {NUM_LANES{1'b0}};
 wire [DATA_PATH_WIDTH:0] disparity_chain[0:NUM_LANES-1];
 
 wire [NUM_LANES*DATA_PATH_WIDTH*10-1:0] data_s;
+wire [NUM_LANES*DATA_PATH_WIDTH*10-1:0] invert;
 wire patternalign_en_s;
+
+assign invert = INVERT_INPUTS ?
+  {NUM_LANES*DATA_PATH_WIDTH*10{1'b1}} :
+  {NUM_LANES*DATA_PATH_WIDTH*10{1'b0}};
 
 always @(posedge clk) begin
   char <= char_s;
@@ -90,14 +96,14 @@ if (REGISTER_INPUTS == 1) begin
   reg [NUM_LANES*DATA_PATH_WIDTH*10-1:0]  data_r;
   always @(posedge clk) begin
     patternalign_en_r <= patternalign_en;
-    data_r  <= data;
+    data_r  <= data ^ invert;
   end
   assign patternalign_en_s = patternalign_en_r;
   assign data_s = data_r;
 
 end else begin
   assign patternalign_en_s = patternalign_en;
-  assign data_s = data;
+  assign data_s = data ^ invert;
 end
 
 for (lane = 0; lane < NUM_LANES; lane = lane + 1) begin: gen_lane
