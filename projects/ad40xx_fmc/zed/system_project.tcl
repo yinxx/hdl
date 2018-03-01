@@ -9,8 +9,6 @@ source $ad_hdl_dir/projects/scripts/adi_board.tcl
 ##
 ## NOTE: Make sure that you set up your required ADC resolution and sampling rate
 ##       in system_bd.tcl
-##
-## For more information see http://www.analog.com/en/products/analog-to-digital-converters/precision-adc-20msps/single-channel-ad-converters/ad4000.html
 
 adi_project_xilinx ad40xx_zed
 
