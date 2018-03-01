@@ -12,13 +12,13 @@ source $ad_hdl_dir/projects/scripts/adi_board.tcl
 ##
 ## For more information see http://www.analog.com/en/products/analog-to-digital-converters/precision-adc-20msps/single-channel-ad-converters/ad4000.html
 
-adi_project_xilinx ad400x_zed
+adi_project_xilinx ad40xx_zed
 
-adi_project_files ad400x_zed [list \
+adi_project_files ad40xx_zed [list \
     "$ad_hdl_dir/library/xilinx/common/ad_iobuf.v" \
     "system_top.v" \
     "system_constr.xdc" \
     "$ad_hdl_dir/projects/common/zed/zed_system_constr.xdc"]
 
-adi_project_run ad400x_zed
+adi_project_run ad40xx_zed
 
