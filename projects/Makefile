@@ -7,6 +7,7 @@
 
 .PHONY: all clean clean_all
 all:
+	-$(MAKE) -C ad5758_sdz all
 	-$(MAKE) -C ad5766_sdz all
 	-$(MAKE) -C ad6676evb all
 	-$(MAKE) -C ad738x_fmc all
@@ -48,6 +49,7 @@ all:
 
 
 clean:
+	$(MAKE) -C ad5758_sdz clean
 	$(MAKE) -C ad5766_sdz clean
 	$(MAKE) -C ad6676evb clean
 	$(MAKE) -C ad738x_fmc clean
@@ -89,6 +91,7 @@ clean:
 
 
 clean-all:
+	$(MAKE) -C ad5758_sdz clean-all
 	$(MAKE) -C ad5766_sdz clean-all
 	$(MAKE) -C ad6676evb clean-all
 	$(MAKE) -C ad738x_fmc clean-all
