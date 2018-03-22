@@ -5,11 +5,7 @@
 ####################################################################################
 ####################################################################################
 
-ifeq ($(NIOS2_MMU),)
-  NIOS2_MMU := 1
-endif
-
-export ALT_NIOS_MMU_ENABLED := $(NIOS2_MMU)
+PROJECT_NAME := fmcjesdadc1_a10gx
 
 M_DEPS += system_top.v
 M_DEPS += system_qsys.tcl
@@ -91,57 +87,7 @@ M_DEPS += ../../../library/util_cpack/util_cpack_dsf.v
 M_DEPS += ../../../library/util_cpack/util_cpack_hw.tcl
 M_DEPS += ../../../library/util_cpack/util_cpack_mux.v
 
-
-M_ALTERA := quartus_sh --64bit -t 
-
-
-M_FLIST += *.log
-M_FLIST += *_INFO.txt
-M_FLIST += *_dump.txt
-M_FLIST += db
-M_FLIST += *.asm.rpt
-M_FLIST += *.done
-M_FLIST += *.eda.rpt
-M_FLIST += *.fit.*
-M_FLIST += *.map.*
-M_FLIST += *.sta.*
-M_FLIST += *.qsf
-M_FLIST += *.qpf
-M_FLIST += *.qws
-M_FLIST += *.sof
-M_FLIST += *.cdf
-M_FLIST += *.sld
-M_FLIST += *.qdf
-M_FLIST += hc_output
-M_FLIST += system_bd
-M_FLIST += hps_isw_handoff
-M_FLIST += hps_sdram_*.csv
-M_FLIST += *ddr3_*.csv
-M_FLIST += incremental_db
-M_FLIST += reconfig_mif
-M_FLIST += *.sopcinfo
-M_FLIST +=  *.jdi
-M_FLIST += *.pin
-M_FLIST += *_summary.csv
-M_FLIST += *.dpf
-
-
-
-.PHONY: all clean clean-all
-all: fmcjesdadc1_a10gx.sof
-
-
-
-clean:clean-all
-
-
-clean-all:
-	rm -rf $(M_FLIST)
-
-
-fmcjesdadc1_a10gx.sof: $(M_DEPS)
-	-rm -rf $(M_FLIST)
-	$(M_ALTERA) system_project.tcl  >> fmcjesdadc1_a10gx_quartus.log 2>&1
+include ../../common/altera/project.mk
 
 ####################################################################################
 ####################################################################################
